@@ -5,7 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\Headers;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Mime\Part\TextPart;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MailerController extends AbstractController
@@ -38,18 +40,14 @@ https://symfony.com/why-use-a-framework
 この点で、フレームワークはブラックボックスではありません！Symfonyの場合、それはまだPHPです...開発されるアプリケーションはSymfonyユニバースに限定されず、たとえば他のPHPライブラリとネイティブに相互運用できます。
 EOL;
 
-
-        $email = (new Email())
-            ->from(new Address('hello@example.com', '送信者名'))
-            ->to(new Address('you@example.com', '受信者名'))
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('日本語のサブジェクトになります。長くなると文字化けするという話もありますので、長く書いてみます。これぐらい長いとどうかな？')
-            ->text($body)
-//            ->html('<p>See Twig integration for better HTML integration!</p>')
+        $headers = (new Headers())
+            ->addMailboxListHeader('From', [new Address('hello@example.com', mb_encode_mimeheader('送信者名'))])
+            ->addMailboxListHeader('To', [new Address('you@example.com', mb_encode_mimeheader('受信者名'))])
+            ->addTextHeader(mb_encode_mimeheader('日本語のサブジェクトになります。長くなると文字化けするという話もありますので、長く書いてみます。これぐらい長いとどうかな？'))
         ;
+
+        $textContent = new TextPart($body, 'utf-8', 'plain', 'base64');
+        $email = new Message($headers, $textContent);
 
         $mailer->send($email);
 
