@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/var/www/html
+      - ./logs:/var/log/php
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./docker/php/ssmtp.conf:/etc/ssmtp/ssmtp.conf
+  maildev:
+    image: kanemu/maildev-with-iconv
+    ports:
+      - 8025:80
+networks:
+  default:
+    driver: bridge
