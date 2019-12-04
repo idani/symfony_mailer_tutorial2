@@ -1,4 +1,5 @@
-FROM php:7.3-fpm-alpine
+#FROM php:7.3-fpm-alpine
+FROM php:7.3-alpine
 
 # Install dev dependencies
 RUN apk update \
@@ -70,5 +71,4 @@ RUN pecl channel-update pecl.php.net \
 
 WORKDIR /var/www/html
 
-# Expose port for Roadrunner PHP application server (optional)
-EXPOSE 8083
+EXPOSE 8000

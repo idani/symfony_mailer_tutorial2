@@ -13,6 +13,7 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./docker/php/ssmtp.conf:/etc/ssmtp/ssmtp.conf
+    command: symfony server:start --no-tls
   maildev:
     image: kanemu/maildev-with-iconv
     ports:
