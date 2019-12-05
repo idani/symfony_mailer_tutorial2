@@ -40,10 +40,17 @@ https://symfony.com/why-use-a-framework
 この点で、フレームワークはブラックボックスではありません！Symfonyの場合、それはまだPHPです...開発されるアプリケーションはSymfonyユニバースに限定されず、たとえば他のPHPライブラリとネイティブに相互運用できます。
 EOL;
 
+        mb_language("uni");
+        mb_internal_encoding("UTF-8");
+
+        $subject = mb_encode_mimeheader('日本語のサブジェクトになります。長くなると文字化けするという話もありますので、長く書いてみます。これぐらい長いとどうかな？');
+        $subject = str_replace("\r\n", '', $subject);
+
         $headers = (new Headers())
             ->addMailboxListHeader('From', [new Address('hello@example.com', mb_encode_mimeheader('送信者名'))])
             ->addMailboxListHeader('To', [new Address('you@example.com', mb_encode_mimeheader('受信者名'))])
-            ->addTextHeader(mb_encode_mimeheader('日本語のサブジェクトになります。長くなると文字化けするという話もありますので、長く書いてみます。これぐらい長いとどうかな？'))
+            ->addTextHeader('Subject', $subject)
+
         ;
 
         $textContent = new TextPart($body, 'utf-8', 'plain', 'base64');
