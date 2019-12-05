@@ -51,7 +51,7 @@ EOL;
 
         ;
 
-        $textContent = new TextPart($body, 'iso-2022-jp', 'plain', '7bit');
+        $textContent = new TextPart($body, 'iso-2022-jp', 'plain', 'base64');
         $email = new Message($headers, $textContent);
 
         $mailer->send($email);
