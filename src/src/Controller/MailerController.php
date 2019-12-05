@@ -51,6 +51,8 @@ EOL;
 
         ;
 
+        $body = mb_convert_encoding($body, 'ISO-2022-JP-MS', 'UTF-8');
+
         $textContent = new TextPart($body, 'iso-2022-jp', 'plain', 'base64');
         $email = new Message($headers, $textContent);
 
